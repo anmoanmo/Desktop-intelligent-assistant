@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>桌面智能体助手</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+  </head>
+  <body>
+    <main id="app" class="app">
+      <section class="stage" aria-label="智能体角色">
+        <div id="avatarToolbar" class="avatar-toolbar">
+          <button id="toolbarPin" type="button" aria-label="置顶">⌖</button>
+          <button id="toolbarChat" type="button" aria-label="对话">◌</button>
+          <button id="toolbarSettings" type="button" aria-label="设置">⚙</button>
+          <button id="toolbarMinimize" type="button" aria-label="隐藏对话">−</button>
+        </div>
+        <div id="connectionBadge" class="connection-badge" hidden></div>
+        <canvas id="avatarCanvas" width="320" height="420"></canvas>
+        <button id="avatarHit" class="avatar-hit" aria-label="打开辅助对话"></button>
+      </section>
+
+      <aside id="miniPopup" class="mini-popup" hidden>
+        <button id="openMainFromMini" class="bubble-expand" type="button" aria-label="打开主对话">↗</button>
+        <div id="miniBubbleText" class="bubble-text" aria-live="polite"></div>
+        <form id="miniForm" class="mini-composer">
+          <textarea id="miniInput" rows="1" placeholder="简单问一句"></textarea>
+          <button id="miniSend" type="submit" aria-label="发送">↵</button>
+        </form>
+      </aside>
+
+      <section id="mainShell" class="main-shell">
+        <aside id="chatPopup" class="chat-popup">
+          <header class="popup-header" data-window-drag>
+            <div>
+              <h1 id="chatTitle">桌面助理</h1>
+              <p id="providerText">DeepSeek</p>
+            </div>
+            <div class="header-actions">
+              <button id="openPanel" class="text-button" type="button">设置</button>
+              <button id="closeChat" class="icon-button" aria-label="关闭">×</button>
+            </div>
+          </header>
+
+          <div id="messages" class="messages" aria-live="polite"></div>
+          <form id="chatForm" class="composer">
+            <textarea id="messageInput" rows="2" placeholder="输入问题或要执行的操作"></textarea>
+            <button id="sendButton" type="submit">发送</button>
+          </form>
+        </aside>
+
+        <aside id="panel" class="panel" hidden>
+          <header class="popup-header" data-window-drag>
+            <div>
+              <h1>设置</h1>
+              <p>模型、上下文与运行状态</p>
+            </div>
+            <div class="header-actions">
+              <button id="openChat" class="text-button" type="button">对话</button>
+              <button id="closePanel" class="icon-button" aria-label="关闭">×</button>
+            </div>
+          </header>
+
+          <section id="settingsView" class="view active">
+            <div class="settings-section">
+              <h2>形象</h2>
+              <div class="profile-row">
+                <label class="field">
+                  <span>小人存档</span>
+                  <select id="profileSelect"></select>
+                </label>
+                <label class="field">
+                  <span>存档名称</span>
+                  <input id="profileName" type="text" maxlength="80" />
+                </label>
+              </div>
+              <div class="profile-actions">
+                <button id="createProfile" class="compact-button" type="button">新建</button>
+                <button id="renameProfile" class="compact-button" type="button">重命名</button>
+                <button id="deleteProfile" class="danger-button" type="button">删除</button>
+              </div>
+              <label class="field">
+                <span>默认模型</span>
+                <input id="modelSearch" type="search" placeholder="按名称、类型或 ID 搜索" />
+                <select id="modelSelect"></select>
+              </label>
+              <label class="field">
+                <span>模型缩放</span>
+                <div class="range-row">
+                  <input id="avatarScale" type="range" min="0.35" max="2.5" step="0.01" value="1" />
+                  <output id="avatarScaleValue">100%</output>
+                </div>
+              </label>
+              <label class="check-row">
+                <input id="avatarAlwaysOnTop" type="checkbox" />
+                <span>置顶显示小人</span>
+              </label>
+            </div>
+
+            <div class="settings-section">
+              <h2>学习记忆</h2>
+              <label class="check-row">
+                <input id="memoryAutoExtract" type="checkbox" />
+                <span>自动沉淀学习偏好</span>
+              </label>
+              <label class="field">
+                <span>每轮最多保存</span>
+                <input id="memoryAutoMaxEntries" type="number" min="0" max="10" step="1" />
+              </label>
+              <label class="field">
+                <span>名称</span>
+                <input id="personaName" type="text" maxlength="80" />
+              </label>
+              <label class="field">
+                <span>性格</span>
+                <textarea id="personaPersonality" rows="2" maxlength="1000"></textarea>
+              </label>
+              <label class="field">
+                <span>说话风格</span>
+                <textarea id="personaSpeakingStyle" rows="2" maxlength="1000"></textarea>
+              </label>
+            </div>
+
+            <div class="settings-section">
+              <h2>主动陪伴</h2>
+              <label class="check-row">
+                <input id="autonomyEnabled" type="checkbox" />
+                <span>启用主动交流</span>
+              </label>
+              <div class="two-column">
+                <label class="field">
+                  <span>统计窗口(秒)</span>
+                  <input id="autonomyWindow" type="number" min="60" max="86400" step="1" />
+                </label>
+                <label class="field">
+                  <span>最多条数</span>
+                  <input id="autonomyMaxMessages" type="number" min="1" max="20" step="1" />
+                </label>
+              </div>
+              <div class="two-column">
+                <label class="field">
+                  <span>最短间隔(秒)</span>
+                  <input id="autonomyMinInterval" type="number" min="30" max="86400" step="1" />
+                </label>
+                <label class="field">
+                  <span>最长间隔(秒)</span>
+                  <input id="autonomyMaxInterval" type="number" min="30" max="86400" step="1" />
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h2>权限控制</h2>
+              <div class="permission-grid">
+                <label class="field">
+                  <span>桌面上下文</span>
+                  <select data-permission-key="desktop_context">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>OCR 截屏</span>
+                  <select data-permission-key="ocr">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>打开文件</span>
+                  <select data-permission-key="open_path">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>定位文件</span>
+                  <select data-permission-key="reveal_path">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>打开网页</span>
+                  <select data-permission-key="open_url">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>网页搜索</span>
+                  <select data-permission-key="web_search">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>启动应用</span>
+                  <select data-permission-key="launch_app">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>保存记忆</span>
+                  <select data-permission-key="save_memory">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>读取记忆</span>
+                  <select data-permission-key="list_memories">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>更新记忆</span>
+                  <select data-permission-key="update_memory">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>删除记忆</span>
+                  <select data-permission-key="delete_memory">
+                    <option value="allow">允许</option>
+                    <option value="ask">每次询问</option>
+                    <option value="deny">禁用</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h2>系统状态</h2>
+              <div class="status-row">
+                <span>渲染</span>
+                <strong id="rendererStatus">检查中</strong>
+              </div>
+              <div class="status-row">
+                <span>上下文</span>
+                <strong id="contextStatus">未刷新</strong>
+              </div>
+              <div class="status-row">
+                <span>人设</span>
+                <strong id="personaStatus">未加载</strong>
+              </div>
+              <div class="status-row">
+                <span>长期记忆</span>
+                <strong id="memoryStatus">0 条</strong>
+              </div>
+              <div class="status-row">
+                <span>模型源</span>
+                <strong id="modelSourceStatus">0 个</strong>
+              </div>
+              <div class="status-row">
+                <span>系统权限</span>
+                <strong id="permissionStatus">未知</strong>
+              </div>
+              <div class="status-row">
+                <span>工具策略</span>
+                <strong id="permissionPolicyStatus">默认</strong>
+              </div>
+              <div class="status-row">
+                <span>待确认操作</span>
+                <strong id="confirmationStatus">0 个</strong>
+              </div>
+              <div class="status-row">
+                <span>主动交流</span>
+                <strong id="autonomyStatus">未启用</strong>
+              </div>
+              <button id="refreshContext" class="secondary-button" type="button">刷新上下文</button>
+              <pre id="contextPreview" class="context-preview"></pre>
+            </div>
+
+            <div class="settings-actions">
+              <button id="saveSettings" class="secondary-button" type="button">保存设置</button>
+              <span id="settingsSaveStatus" role="status"></span>
+            </div>
+          </section>
+        </aside>
+        <button id="mainResizeGrip" class="resize-grip" type="button" aria-label="调整大小"></button>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>

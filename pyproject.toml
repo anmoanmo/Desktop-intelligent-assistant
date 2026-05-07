@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "desktop-assistant"
+version = "0.1.0"
+description = "桌面智能体助手，支持角色渲染、桌面上下文、大模型对话和本地工具调用。"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "openai>=2.15.0",
+  "PySide6>=6.7",
+  "pyobjc>=12.1; sys_platform == 'darwin'",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+]
+
+[project.scripts]
+desktop-assistant = "desktop_assistant.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+desktop_assistant = [
+  "ui/*.html",
+  "ui/*.css",
+  "ui/*.js",
+  "ui/vendor/*",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

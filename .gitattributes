@@ -1,0 +1,6 @@
+# 统一文本文件换行
+* text=auto eol=lf
+
+# 角色资源为二进制文件，不参与文本差异处理
+*.png binary
+*.skel binary

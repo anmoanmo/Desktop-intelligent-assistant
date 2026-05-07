@@ -1,0 +1,4 @@
+openai>=2.15.0
+PySide6>=6.7
+pyobjc>=12.1; sys_platform == "darwin"
+pytest>=8

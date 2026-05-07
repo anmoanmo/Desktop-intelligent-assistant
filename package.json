@@ -1,0 +1,14 @@
+{
+  "name": "desktop-assistant-renderer-vendor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "copy-vendor": "node scripts/copy_frontend_vendor.mjs"
+  },
+  "dependencies": {
+    "@pixi-spine/all-3.8": "3.1.2",
+    "pixi-live2d-display": "^0.4.0",
+    "pixi.js": "6.5.10",
+    "pixi.js-legacy": "6.5.10"
+  }
+}

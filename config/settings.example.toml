@@ -1,0 +1,70 @@
+[llm]
+provider_profile = "deepseek"
+base_url = "https://api.deepseek.com"
+model = "deepseek-v4-pro"
+api_key_env = "DEEPSEEK_API_KEY"
+temperature = 0.4
+timeout_seconds = 60
+
+[context]
+mode = "manual"
+ocr_enabled = false
+ocr_languages = ["zh-Hans", "en-US"]
+max_context_chars = 5000
+visible_window_limit = 8
+
+[privacy]
+send_screenshots = false
+
+[permissions]
+desktop_context = "allow"
+ocr = "deny"
+open_path = "ask"
+reveal_path = "ask"
+open_url = "ask"
+web_search = "allow"
+launch_app = "ask"
+save_memory = "ask"
+list_memories = "allow"
+update_memory = "ask"
+delete_memory = "ask"
+
+[models]
+search_dirs = []
+sources_file = ""
+env_var = "DESKTOP_ASSISTANT_MODEL_DIRS"
+default_id = ""
+
+[persona]
+path = "data/persona.toml"
+
+[memory]
+enabled = true
+path = "data/memory.json"
+max_prompt_entries = 20
+max_prompt_chars = 4000
+
+[autonomy]
+enabled = true
+interval_seconds = 180
+cooldown_seconds = 600
+window_seconds = 600
+max_messages_per_window = 3
+min_interval_seconds = 60
+max_interval_seconds = 180
+
+[paths]
+audit_log = "logs/tool_calls.jsonl"
+
+[ui]
+language = "zh-CN"
+width = 420
+height = 680
+avatar_x = 0
+avatar_y = 0
+avatar_scale = 1.0
+avatar_always_on_top = true
+main_x = 0
+main_y = 0
+main_width = 560
+main_height = 640

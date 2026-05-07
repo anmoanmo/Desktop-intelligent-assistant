@@ -1,0 +1,12 @@
+# 复制为 config/model_sources.toml 后按本机环境修改。
+# 路径可以是绝对路径，也可以是相对项目根目录的路径。
+
+[[sources]]
+name = "本地角色模型目录"
+path = "./models"
+enabled = true
+
+[[sources]]
+name = "明日方舟角色资源"
+path = "./Ark-Models-main"
+enabled = true

@@ -1,0 +1,7 @@
+# 提交包默认模型来源，使用仓库内课程演示资源。
+# 如需改成本机其他目录，可复制或修改本文件。
+
+[[sources]]
+name = "明日方舟角色资源"
+path = "./Ark-Models-main"
+enabled = true
