@@ -52,8 +52,11 @@ conda activate desktop-assistant
 如果本机已经有可用的 Python 3.11 环境，也可以直接在该环境中安装：
 
 ```bash
-pip install -e .
+python -m pip install -e .
+python -m desktop_assistant --check
 ```
+
+更详细的本机环境运行方式见 `docs/run-guide.md`。
 
 ## 配置方法
 
