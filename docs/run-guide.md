@@ -3,22 +3,43 @@
 ## 环境要求
 
 - Python 3.11
-- conda 环境名：`py311`
+- 推荐 conda 环境名：`desktop-assistant`
 - 主要依赖：`PySide6`、`openai`、`pytest`
 - macOS 如需更完整桌面上下文，需要给终端或应用授权辅助功能权限
 
 ## 安装依赖
 
 ```bash
-conda activate py311
+conda env create -f environment.yml
+conda activate desktop-assistant
 pip install -e .
 ```
 
-如果需要重新创建环境：
+如果环境已经存在，可以更新依赖：
 
 ```bash
-conda env create -f environment.yml
-conda activate py311
+conda env update -n desktop-assistant -f environment.yml --prune
+conda activate desktop-assistant
+pip install -e .
+```
+
+也可以使用脚本自动创建或更新环境：
+
+```bash
+bash scripts/setup.sh
+conda activate desktop-assistant
+```
+
+Windows：
+
+```bat
+scripts\setup.bat
+conda activate desktop-assistant
+```
+
+如果本机已经有 Python 3.11 环境，可以直接在该环境中执行：
+
+```bash
 pip install -e .
 ```
 
@@ -42,13 +63,13 @@ DESKTOP_ASSISTANT_MODEL_DIRS=./Ark-Models-main
 macOS 或 Linux：
 
 ```bash
-bash scripts/启动.sh
+bash scripts/start.sh
 ```
 
 Windows：
 
 ```bat
-scripts\启动.bat
+scripts\start.bat
 ```
 
 直接启动：
@@ -60,13 +81,13 @@ desktop-assistant
 备用启动方式：
 
 ```bash
-conda run -n py311 python -m desktop_assistant
+conda run -n desktop-assistant python -m desktop_assistant
 ```
 
 ## 检查配置
 
 ```bash
-conda run -n py311 python -m desktop_assistant --check
+conda run -n desktop-assistant python -m desktop_assistant --check
 ```
 
 检查命令不会启动图形界面，只会加载配置、创建服务对象并扫描模型目录。

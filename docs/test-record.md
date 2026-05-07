@@ -2,7 +2,7 @@
 
 ## 测试环境
 
-- conda 环境：`py311`
+- 推荐 conda 环境：`desktop-assistant`
 - 测试命令均在提交包根目录执行。
 
 ## 自动化测试
@@ -10,7 +10,7 @@
 执行命令：
 
 ```bash
-conda run -n py311 python -m pytest
+conda run -n desktop-assistant python -m pytest
 ```
 
 提交包中执行结果：
@@ -26,7 +26,7 @@ conda run -n py311 python -m pytest
 执行命令：
 
 ```bash
-conda run -n py311 python -m desktop_assistant --check
+conda run -n desktop-assistant python -m desktop_assistant --check
 ```
 
 检查内容：

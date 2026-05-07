@@ -2,8 +2,6 @@
 
 桌面智能体助手是一个面向学习、办公和日常桌面场景的智能桌面应用。项目以 Python 桌面程序为主体，结合大模型对话、桌面上下文读取、工具调用、长期记忆和 Live2D/Spine 角色渲染，实现一个可交互、可配置、可扩展的桌面智能体原型。
 
-本项目作为《大模型应用开发技术》课程项目代码提交包使用，重点展示大模型应用开发、智能体编排、本地工具安全控制和桌面端人机交互设计。
-
 ## 主要功能
 
 - 桌面悬浮角色窗口：支持透明置顶、拖动、缩放和点击唤起聊天。
@@ -29,18 +27,31 @@ Ark-Models-main/            课程演示用角色模型资源
 
 ## 环境准备
 
-项目使用 `py311` conda 环境：
-
-```bash
-conda activate py311
-pip install -e .
-```
-
-也可以直接使用仓库中的环境文件创建环境：
+推荐为项目单独创建 conda 环境，默认环境名为 `desktop-assistant`。请在项目根目录执行：
 
 ```bash
 conda env create -f environment.yml
-conda activate py311
+conda activate desktop-assistant
+pip install -e .
+```
+
+也可以使用脚本自动创建或更新环境：
+
+```bash
+bash scripts/setup.sh
+conda activate desktop-assistant
+```
+
+Windows：
+
+```bat
+scripts\setup.bat
+conda activate desktop-assistant
+```
+
+如果本机已经有可用的 Python 3.11 环境，也可以直接在该环境中安装：
+
+```bash
 pip install -e .
 ```
 
@@ -66,13 +77,13 @@ DESKTOP_ASSISTANT_MODEL_DIRS=./Ark-Models-main
 macOS 或 Linux：
 
 ```bash
-bash scripts/启动.sh
+bash scripts/start.sh
 ```
 
 Windows：
 
 ```bat
-scripts\启动.bat
+scripts\start.bat
 ```
 
 也可以直接运行：
@@ -84,7 +95,7 @@ desktop-assistant
 如果命令不在 PATH 中：
 
 ```bash
-conda run -n py311 python -m desktop_assistant
+conda run -n desktop-assistant python -m desktop_assistant
 ```
 
 ## 配置检查
@@ -92,7 +103,7 @@ conda run -n py311 python -m desktop_assistant
 不启动图形界面，只检查配置和模型扫描：
 
 ```bash
-conda run -n py311 python -m desktop_assistant --check
+conda run -n desktop-assistant python -m desktop_assistant --check
 ```
 
 检查结果会输出项目根目录、大模型配置、当前角色档案、模型来源目录、模型数量和模型类型。
@@ -100,7 +111,7 @@ conda run -n py311 python -m desktop_assistant --check
 ## 测试
 
 ```bash
-conda run -n py311 python -m pytest
+conda run -n desktop-assistant python -m pytest
 ```
 
 当前提交包整理时，测试结果为 `57 passed`。
@@ -109,7 +120,16 @@ conda run -n py311 python -m pytest
 
 本项目包含的《明日方舟》相关角色模型资源版权归上海鹰角网络有限公司所有。相关资源仅用于课程学习、技术研究和本地演示，不用于任何商业活动，不损害版权方利益。如需正式发布或商业使用，应另行取得权利方授权。
 
-资源来源和格式说明见 `Ark-Models-main/README.md` 与 `docs/资源说明.md`。
+资源来源和格式说明见 `Ark-Models-main/README.md` 与 `docs/resource-notice.md`。
+
+## 技术文档
+
+- `technical-document.md`：面向课程报告整合的详细技术材料。
+- `docs/technical-design.md`：项目模块和架构说明。
+- `docs/run-guide.md`：运行环境和启动说明。
+- `docs/collaboration-guide.md`：小组协作和提交规范。
+- `docs/resource-notice.md`：角色资源来源和版权说明。
+- `docs/test-record.md`：测试与检查记录。
 
 ## 协作要求
 

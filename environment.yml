@@ -1,4 +1,4 @@
-name: py311
+name: desktop-assistant
 channels:
   - conda-forge
 dependencies:
