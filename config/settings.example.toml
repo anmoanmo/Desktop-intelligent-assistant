@@ -17,7 +17,7 @@ visible_window_limit = 8
 send_screenshots = false
 
 [permissions]
-desktop_context = "allow"
+desktop_context = "ask"
 ocr = "deny"
 open_path = "ask"
 reveal_path = "ask"
@@ -43,9 +43,11 @@ enabled = true
 path = "data/memory.json"
 max_prompt_entries = 20
 max_prompt_chars = 4000
+auto_extract_enabled = false
+auto_extract_max_entries = 3
 
 [autonomy]
-enabled = true
+enabled = false
 interval_seconds = 180
 cooldown_seconds = 600
 window_seconds = 600

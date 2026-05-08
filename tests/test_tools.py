@@ -25,6 +25,9 @@ def test_get_desktop_context_tool_records_audit(tmp_path: Path) -> None:
     assert result["requires_confirmation"] is False
     rows = [json.loads(line) for line in audit.path.read_text(encoding="utf-8").splitlines()]
     assert rows[0]["event"] == "tool_call"
+    audit_payload = rows[0]["payload"]
+    assert audit_payload["result"]["result"]["context"]["focused_window_title"].startswith("[redacted:")
+    assert "Window" not in json.dumps(audit_payload, ensure_ascii=False)
 
 
 def test_open_url_rejects_non_http(tmp_path: Path) -> None:
@@ -257,6 +260,20 @@ def test_save_memory_tool(tmp_path: Path) -> None:
 
     assert result["ok"] is True
     assert memory.count() == 1
+
+
+def test_audit_log_redacts_memory_content(tmp_path: Path) -> None:
+    memory = MemoryStore(tmp_path / "memory.json")
+    audit = AuditLog(tmp_path / "audit.jsonl")
+    executor = ToolExecutor(StubCollector(), audit, memory_store=memory)
+
+    executor.execute("save_memory", {"content": "用户偏好手动触发桌面助理。", "category": "preference"})
+
+    raw = audit.path.read_text(encoding="utf-8")
+    row = json.loads(raw.splitlines()[0])
+    assert "用户偏好手动触发桌面助理" not in raw
+    assert row["payload"]["arguments"]["content"].startswith("[redacted:")
+    assert row["payload"]["result"]["result"]["memory"]["content"].startswith("[redacted:")
 
 
 def test_update_and_delete_memory_tools(tmp_path: Path) -> None:

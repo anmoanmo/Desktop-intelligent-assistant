@@ -39,7 +39,7 @@ class PrivacySettings:
 
 @dataclass(slots=True)
 class PermissionsSettings:
-    desktop_context: str = "allow"
+    desktop_context: str = "ask"
     ocr: str = "deny"
     open_path: str = "ask"
     reveal_path: str = "ask"
@@ -71,13 +71,13 @@ class MemorySettings:
     path: str = "data/memory.json"
     max_prompt_entries: int = 20
     max_prompt_chars: int = 4000
-    auto_extract_enabled: bool = True
+    auto_extract_enabled: bool = False
     auto_extract_max_entries: int = 3
 
 
 @dataclass(slots=True)
 class AutonomySettings:
-    enabled: bool = True
+    enabled: bool = False
     interval_seconds: int = 180
     cooldown_seconds: int = 600
     window_seconds: int = 600

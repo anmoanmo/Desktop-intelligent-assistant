@@ -1,19 +1,55 @@
+# Local secrets and machine-specific configuration
 .env
 .env.*
 !.env.example
+*.local
+*.local.*
 config/*.toml
 !config/model_sources.toml
 !config/*.example.toml
+
+# Runtime state that can contain personal data
 data/
 logs/
-node_modules/
-.vscode/
-.DS_Store
+private-reports/
+*.log
+
+# Python caches, test output, and build artifacts
 __pycache__/
 *.py[cod]
+*$py.class
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .coverage
+.coverage.*
+htmlcov/
 dist/
 build/
 *.egg-info/
-*.log
+
+# Node dependencies and package-manager caches
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+coverage/
+
+# Editor, IDE, and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# Temporary local artifacts
+tmp/
+temp/
+*.tmp
+
+# Nested resource repository metadata; keep only project-consumed assets tracked
+Ark-Models-main/.git/
+Ark-Models-main/.gitignore
+Ark-Models-main/.gitattributes

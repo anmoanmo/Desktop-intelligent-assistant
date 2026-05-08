@@ -11,15 +11,15 @@ def test_load_defaults(tmp_path: Path) -> None:
     assert settings.llm.base_url == "https://api.deepseek.com"
     assert settings.llm.model == "deepseek-v4-pro"
     assert settings.privacy.send_screenshots is False
-    assert settings.permissions.desktop_context == "allow"
+    assert settings.permissions.desktop_context == "ask"
     assert settings.permissions.ocr == "deny"
     assert settings.permissions.open_url == "ask"
     assert settings.permissions.web_search == "allow"
     assert settings.permissions.list_memories == "allow"
     assert settings.memory.enabled is True
-    assert settings.memory.auto_extract_enabled is True
+    assert settings.memory.auto_extract_enabled is False
     assert settings.memory.auto_extract_max_entries == 3
-    assert settings.autonomy.enabled is True
+    assert settings.autonomy.enabled is False
     assert settings.autonomy.interval_seconds == 180
     assert settings.autonomy.window_seconds == 600
     assert settings.autonomy.max_messages_per_window == 3
