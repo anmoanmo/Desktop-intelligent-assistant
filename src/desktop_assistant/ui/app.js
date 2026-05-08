@@ -530,11 +530,12 @@ class RendererManager {
       metadata.spineAtlasFile = model.assets.atlas_url;
     }
     if (model.assets?.png_url) {
-      const pageName = model.assets.png?.split("/").pop();
+      const texture = PIXI.Texture.from(model.assets.png_url);
+      const pageName = this.assetBasename(model.assets.png);
       if (pageName) {
-        metadata.images = { [pageName]: PIXI.Texture.from(model.assets.png_url) };
+        metadata.images = { [pageName]: texture, default: texture };
       }
-      metadata.image = PIXI.Texture.from(model.assets.png_url);
+      metadata.image = texture;
     }
     loader.add(model.id, model.assets?.skel_url || model.entry_url, { metadata });
     loader.load((loaderInstance, resources) => {
@@ -569,6 +570,11 @@ class RendererManager {
       app.stage.addChild(avatar);
       this.currentRenderFailed = false;
     });
+  }
+
+  assetBasename(path) {
+    if (!path || typeof path !== "string") return "";
+    return path.split(/[\\/]/).pop() || "";
   }
 }
 
